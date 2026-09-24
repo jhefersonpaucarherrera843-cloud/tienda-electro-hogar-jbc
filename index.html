@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electro Hogar JBC - Catálogo de Ventas</title>
+    <!-- FontAwesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        /* Navbar Azul Oscuro */
+        .navbar {
+            background-color: #0d1b2a;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .cart-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+            scroll-margin-top: 80px;
+        }
+
+        /* Filtros de Categorías */
+        .categories-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .cat-btn {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Banner Naranja */
+        .banner {
+            background: linear-gradient(135deg, #ff6b00, #ff8800);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+            scroll-margin-top: 80px;
+        }
+
+        .banner h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .banner p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Grid de Productos */
+        .grid-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 15px;
+            scroll-margin-top: 80px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        /* Tarjeta de Producto */
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .fav-icon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .product-specs {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-old {
+            font-size: 12px;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+
+        .price-current {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .btn-details {
+            background: none;
+            border: none;
+            color: #2563eb;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 8px;
+            display: block;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .btn-details:hover {
+            text-decoration: underline;
+        }
+
+        .btn-add {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-add:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Modal Carrito */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        .cart-modal.open {
+            display: flex;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .cart-item-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .cart-item-price {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-checkout {
+            background-color: #16a34a;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* Modales Generales (Contacto y Detalles) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 15px;
+            color: #0f172a;
+        }
+
+        .detail-img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .detail-desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .detail-features {
+            font-size: 12px;
+            color: #334155;
+            margin-bottom: 15px;
+        }
+
+        .detail-features li {
+            margin-bottom: 5px;
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .btn-send-contact {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Navbar -->
+    <nav class="navbar">
+        <a href="#inicio" class="logo">Electro <span>Hogar JBC</span></a>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#categorias">Categorías</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a onclick="openContact()">Contacto</a></li>
+        </ul>
+        <button class="cart-btn" onclick="toggleCart()">
+            <i class="fa-solid fa-cart-shopping"></i> Carrito (<span id="cart-count">0</span>)
+        </button>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="container">
+        
+        <!-- Banner de Ofertas (Inicio) -->
+        <div class="banner" id="inicio">
+            <h2>🔥 Ofertas Especiales</h2>
+            <p>Grandes descuentos en productos seleccionados</p>
+        </div>
+
+        <div class="section-title" id="categorias">Categorías</div>
+        
+        <!-- Filtro de Categorías -->
+        <div class="categories-container">
+            <button class="cat-btn active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Todos</button>
+            <button class="cat-btn" onclick="filterCategory('laptops', this)"><i class="fa-solid fa-laptop"></i> Laptops</button>
+            <button class="cat-btn" onclick="filterCategory('celulares', this)"><i class="fa-solid fa-mobile-screen-button"></i> Celulares</button>
+            <button class="cat-btn" onclick="filterCategory('tv', this)"><i class="fa-solid fa-tv"></i> TV</button>
+            <button class="cat-btn" onclick="filterCategory('refrigeradoras', this)"><i class="fa-solid fa-kitchen-set"></i> Refrigeradoras</button>
+            <button class="cat-btn" onclick="filterCategory('lavadoras', this)"><i class="fa-solid fa-soap"></i> Lavadoras</button>
+            <button class="cat-btn" onclick="filterCategory('cocina', this)"><i class="fa-solid fa-utensils"></i> Cocina</button>
+        </div>
+
+        <!-- Catálogo de Productos -->
+        <div class="grid-title" id="productos">Nuestros productos</div>
+        <div class="products-grid" id="products-grid">
+            <!-- Los productos se cargan mediante JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal Carrito -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <span class="close-btn" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #94a3b8; margin-top: 20px;">El carrito está vacío.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">S/ 0</span>
+            </div>
+            <button class="btn-checkout" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Pedir por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles del Producto -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-box">
+            <div class="cart-header">
+                <h3 id="modalTitle">Detalles del Producto</h3>
+                <span class="close-btn" onclick="closeDetails()">&times;</span>
+            </div>
+            <img src="" id="modalImg" class="detail-img" alt="Producto">
+            <div id="modalPrice" style="font-size: 20px; font-weight: bold; color: #2563eb; margin-bottom: 10px;"></div>
+            <p class="detail-desc" id="modalDesc"></p>
+            <ul class="detail-features" id="modalFeatures"></ul>
+            <button class="btn-add" id="modalAddBtn"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
+        </div>
+    </div>
+
+    <!-- Modal Contacto -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-box">
+            <div class="cart-header">
+                <h3>Contacto Electro Hogar JBC</h3>
+                <span class="close-btn" onclick="closeContact()">&times;</span>
+            </div>
+            <form onsubmit="submitContact(event)">
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="contactName" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono / WhatsApp:</label>
+                    <input type="tel" id="contactPhone" required placeholder="Ej. 987654321">
+                </div>
+                <div class="form-group">
+                    <label>Mensaje o Consulta:</label>
+                    <textarea id="contactMessage" rows="3" required placeholder="¿En qué podemos ayudarte?"></textarea>
+                </div>
+                <button type="submit" class="btn-send-contact"><i class="fa-brands fa-whatsapp"></i> Enviar Mensaje</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 42 PRODUCTOS: CON INFORMACIÓN DETALLADA Y COMPLETA
+        const products = [
+            // --- CELULARES (7) ---
+            { 
+                id: 1, 
+                category: 'celulares', 
+                name: 'iPhone 15 Pro', 
+                specs: '128GB - Titanio - Cámara 48MP - Chip A17 Pro', 
+                price: 3599, 
+                oldPrice: 4000, 
+                img: 'IMAGENES/15 PRO.jpeg',
+                description: 'Diseño en titanio de calidad aeroespacial, ligero y resistente. Incorpora el revolucionario chip A17 Pro y el botón Acción personalizable.',
+                features: ['Pantalla Super Retina XDR de 6.1"', 'Chip A17 Pro con GPU de 6 núcleos', 'Sistema de cámaras Pro de 48 MP', 'Puerto USB-C compatible con USB 3']
+            },
+            { 
+                id: 2, 
+                category: 'celulares', 
+                name: 'Samsung Galaxy S24 Ultra', 
+                specs: '256GB - 12GB RAM - S-Pen - Galaxy AI', 
+                price: 3499, 
+                oldPrice: 3800, 
+                img: 'IMAGENES/S24.jpeg',
+                description: 'Poten ciado por Galaxy AI. Marcos de titanio con pantalla plana y lápiz S-Pen integrado para máxima productividad y creatividad.',
+                features: ['Pantalla Dynamic AMOLED 2X de 6.8"', 'Cámara principal de 200 MP', 'Procesador Snapdragon 8 Gen 3', 'Batería de 5000 mAh con carga rápida']
+            },
+            { 
+                id: 3, 
+                category: 'celulares', 
+                name: 'Xiaomi Redmi Note 13 Pro', 
+                specs: '256GB - 200MP - 5G - Carga 67W', 
+                price: 999, 
+                oldPrice: 1200, 
+                img: 'IMAGENES/NOTE 13.jpeg',
+                description: 'Cámara icónica de 200 MP con estabilización óptica (OIS). Pantalla AMOLED de 120Hz con colores vivos y batería de larga duración.',
+                features: ['Pantalla AMOLED 1.5K de 120Hz', 'Cámara de 200 MP con OIS', 'Carga turbo de 67W', 'Procesador Snapdragon 7s Gen 2']
+            },
+            { 
+                id: 4, 
+                category: 'celulares', 
+                name: 'Motorola Edge 40', 
+                specs: '256GB - Cámara 50MP OLED 144Hz', 
+                price: 1599, 
+                oldPrice: 1800, 
+                img: 'IMAGENES/MOTOROLA EDGE 40.jpeg',
+                description: 'Elegancia curvo-simétrica, protección contra el agua IP68 y rendimiento excepcional con carga inalámbrica.',
+                features: ['Pantalla OLED curva de 144Hz', 'Protección IP68 contra agua y polvo', 'Cámara principal de 50 MP con f/1.4', 'Carga rápida TurboPower de 68W']
+            },
+            { 
+                id: 5, 
+                category: 'celulares', 
+                name: 'Realme C55', 
+                specs: '128GB - 6GB RAM - Batería 5000mAh', 
+                price: 699, 
+                oldPrice: 850, 
+                img: 'IMAGENES/C55.jpeg',
+                description: 'El primer smartphone Android con función Mini Capsule. Excelente relación calidad-precio y cámara de 64MP.',
+                features: ['Cámara de 64 MP con IA', 'Batería de 5000 mAh + Carga 33W', 'Pantalla FHD+ de 90Hz', 'Cápsula de notificaciones integradas']
+            },
+            { 
+                id: 6, 
+                category: 'celulares', 
+                name: 'POCO X6 Pro 5G', 
+                specs: '512GB - 12GB RAM - Dimensity 8300', 
+                price: 1299, 
+                oldPrice: 1500, 
+                img: 'IMAGENES/X6 PRO.jpeg',
+                description: 'Potencia Gamer insuperable a precio de gama media. Sistema de refrigeración avanzado y pantalla AMOLED de alto brillo.',
+                features: ['Procesador Dimensity 8300-Ultra', 'Pantalla Flow AMOLED CrystalRes 120Hz', '512GB de almacenamiento UFS 4.0', 'Carga rápida de 67W']
+            },
+            { 
+                id: 7, 
+                category: 'celulares', 
+                name: 'Honor Magic 6 Lite', 
+                specs: '256GB - Pantalla Anti-caídas OLED', 
+                price: 1199, 
+                oldPrice: 1399, 
+                img: 'IMAGENES/MAGIC 6 LITE.jpeg',
+                description: 'Pantalla ultra resistente con protección anticaídas de 360°. Gran batería de 5800 mAh en un cuerpo ultra delgado.',
+                features: ['Pantalla AMOLED de 120Hz ultra resistente', 'Batería de 5800 mAh (hasta 2 días)', 'Cámara principal de 108 MP', '256GB de almacenamiento interno']
+            },
+
+            // --- LAPTOPS (7) ---
+            { 
+                id: 8, 
+                category: 'laptops', 
+                name: 'MacBook Air M2', 
+                specs: '8GB RAM - 256GB SSD - Pantalla Liquid Retina 13.6"', 
+                price: 4299, 
+                oldPrice: 4800, 
+                img: 'IMAGENES/MACBOOK M2.jpeg',
+                description: 'Rediseñada en torno al chip M2 de última generación. Increíblemente delgada, silenciosa y con hasta 18 horas de autonomía.',
+                features: ['Procesador Apple M2 de 8 núcleos', 'Pantalla Liquid Retina de 13.6"', 'Cámara FaceTime HD de 1080p', 'Puerto de carga MagSafe 3']
+            },
+            { 
+                id: 9, 
+                category: 'laptops', 
+                name: 'ASUS TUF Gaming F15', 
+                specs: 'Core i7 - 16GB RAM - RTX 4050 - 512GB SSD', 
+                price: 3899, 
+                oldPrice: 4300, 
+                img: 'IMAGENES/ASUS A15.jpeg',
+                description: 'Laptop gamer ultra duradera con certificación militar. Tarjeta gráfica dedicada serie RTX 40 y excelente refrigeración.',
+                features: ['Procesador Intel Core i7 de 12ª Gen', 'Gráficos NVIDIA GeForce RTX 4050 6GB', 'Pantalla FHD de 144Hz', 'Teclado RGB retroiluminado']
+            },
+            { 
+                id: 10, 
+                category: 'laptops', 
+                name: 'HP Pavilion 15', 
+                specs: 'Ryzen 7 - 16GB RAM - 512GB SSD - FHD', 
+                price: 2699, 
+                oldPrice: 2999, 
+                img: 'IMAGENES/HP 15.jpeg',
+                description: 'Perfecta para trabajo exigente, multitarea y contenido multimedia. Audio B&O y pantalla micro-edge.',
+                features: ['Procesador AMD Ryzen 7 7730U', '16GB RAM DDR4 + SSD NVMe 512GB', 'Audio premium tuning de B&O', 'Batería de carga rápida HP']
+            },
+            { 
+                id: 11, 
+                category: 'laptops', 
+                name: 'Lenovo IdeaPad Slim 3', 
+                specs: 'Core i5 - 8GB RAM - 512GB SSD - Windows 11', 
+                price: 1999, 
+                oldPrice: 2299, 
+                img: 'IMAGENES/SLIM 3.jpeg',
+                description: 'Laptop ligera y resistente ideal para estudiantes y oficina. Chasis robusto e inicio ultrarrápido con SSD.',
+                features: ['Procesador Intel Core i5 de 12ª Gen', 'Pantalla Full HD de 15.6" antirreflejo', 'Cámara con obturador de privacidad', 'Carga rápida Smart Power']
+            },
+            { 
+                id: 12, 
+                category: 'laptops', 
+                name: 'Acer Nitro 5 Gaming', 
+                specs: 'Core i5 - 16GB RAM - RTX 3050 - 144Hz', 
+                price: 3199, 
+                oldPrice: 3500, 
+                img: 'IMAGENES/ACER NITRO 15.jpeg',
+                description: 'Domina los juegos con el procesador Intel y la potencia de la GPU GeForce RTX. Doble ventilador con tecnología CoolBoost.',
+                features: ['Procesador Intel Core i5-12500H', 'NVIDIA GeForce RTX 3050 4GB', 'Pantalla IPS FHD de 144Hz', 'Teclado numérico Gamer con NitroSense']
+            },
+            { 
+                id: 13, 
+                category: 'laptops', 
+                name: 'Dell Inspiron 14', 
+                specs: 'Core i7 13ª Gen - 16GB RAM - 512GB SSD', 
+                price: 3299, 
+                oldPrice: 3699, 
+                img: 'IMAGENES/DELL 14.jpeg',
+                description: 'Diseño compacto de 14 pulgadas en aluminio. Procesador Intel de 13ª generación para la máxima eficiencia en movimiento.',
+                features: ['Intel Core i7-1355U', '16GB RAM LPDDR5 ultrarrápida', 'Pantalla FHD+ en formato 16:10', 'Sensor de huellas dactilares']
+            },
+            { 
+                id: 14, 
+                category: 'laptops', 
+                name: 'MacBook Pro 14" M3', 
+                specs: '16GB Memoria - 512GB SSD - Pantalla Liquid Retina XDR', 
+                price: 6899, 
+                oldPrice: 7499, 
+                img: 'IMAGENES/PRO 14.jpeg',
+                description: 'Rendimiento desbordante para profesionales creativos. Pantalla líder en la industria y la eficiencia energética del chip M3.',
+                features: ['Chip M3 de Apple con arquitectura de 3nm', 'Pantalla Liquid Retina XDR con ProMotion (120Hz)', 'Hasta 22 horas de autonomía', 'Sistema de 6 altavoces de alta fidelidad']
+            },
+
+            // --- TELEVISORES TV (7) ---
+            { 
+                id: 15, 
+                category: 'tv', 
+                name: 'Smart TV LG OLED 55"', 
+                specs: '4K UHD - ThinQ AI - Dolby Vision - 120Hz', 
+                price: 3199, 
+                oldPrice: 3799, 
+                img: 'IMAGENES/LG 55.jpeg',
+                description: 'Negros perfectos y contraste infinito gracias a sus píxeles autoiluminados. Ideal para cinefilos y consolas de última generación.',
+                features: ['Panel OLED 4K con Dolby Vision IQ', 'Procesador α8 AI 4K', '4 puertos HDMI 2.1 compatibles con VRR/ALLM', 'Sistema operativo webOS con Magic Remote']
+            },
+            { 
+                id: 16, 
+                category: 'tv', 
+                name: 'Samsung Crystal UHD 65"', 
+                specs: '4K Smart TV - HDR10+ - Gaming Hub', 
+                price: 2299, 
+                oldPrice: 2699, 
+                img: 'IMAGENES/SAMSUNG 65.jpeg',
+                description: 'Colores vibrantes e imágenes ultra nítidas con la tecnología Dynamic Crystal Color y procesador Crystal Processor 4K.',
+                features: ['Pantalla de 65 pulgadas 4K UHD', 'Procesador Crystal 4K', 'Diseño AirSlim ultra delgado', 'Compatible con asistentes de voz Alexa y Google']
+            },
+            { 
+                id: 17, 
+                category: 'tv', 
+                name: 'TCL Google TV 43"', 
+                specs: 'Full HD - Comando de Voz Hands-Free - HDR10', 
+                price: 999, 
+                oldPrice: 1299, 
+                img: 'IMAGENES/TCL 43.jpeg',
+                description: 'Todo tu contenido organizado en un solo lugar con Google TV. Controla tu TV con las manos libres mediante el asistente de Google.',
+                features: ['Sistema operativo Google TV', 'Pantalla Full HD con HDR10', 'Control por voz integrado en el panel', 'Conectividad Bluetooth 5.0 y Wi-Fi dual']
+            },
+            { 
+                id: 18, 
+                category: 'tv', 
+                name: 'Sony Bravia XR 55" OLED', 
+                specs: '4K HDR - Procesador Cognitivo XR - Google TV', 
+                price: 4299, 
+                oldPrice: 4899, 
+                img: 'IMAGENES/TV 55.jpeg',
+                description: 'Imágenes y sonido en armonía perfecta. El procesador cognitivo XR entiende cómo ven y oyen los humanos para ofrecer un realismo único.',
+                features: ['Panel OLED 4K con Cognitive Processor XR', 'Acoustic Surface Audio+ (el sonido sale de la pantalla)', 'Perfecto para PlayStation 5', 'Google TV con menú exclusivo Bravia Core']
+            },
+            { 
+                id: 19, 
+                category: 'tv', 
+                name: 'Xiaomi TV Q2 50" QLED', 
+                specs: '4K Quantum Dot - Google TV - MEMC 60Hz', 
+                price: 1699, 
+                oldPrice: 1999, 
+                img: 'IMAGENES/XIAOMI 50.jpeg',
+                description: 'Tecnología Quantum Dot para una gama de colores más amplia. Diseño sin marcos en aleación de aluminio elegante para tu sala.',
+                features: ['Pantalla QLED 4K con Dolby Vision IQ', 'Google TV integrado', 'Altavoces estéreo de 30W con Dolby Atmos', 'Marco de aleación de aluminio premium']
+            },
+            { 
+                id: 20, 
+                category: 'tv', 
+                name: 'Hisense 55" QLED 4K', 
+                specs: 'Dolby Vision - Dolby Atmos - Modo Juego PRO', 
+                price: 1599, 
+                oldPrice: 1899, 
+                img: 'IMAGENES/HISENSE 55.jpeg',
+                description: 'Ofrece más de mil millones de tonos de color. Modo de juego automatizado de baja latencia para partidas fluidas.',
+                features: ['Tecnología Quantum Dot Colour', 'Dolby Vision & Dolby Atmos', 'Sistema VIDAA U rápido e intuitivo', 'Game Mode Plus con VRR']
+            },
+            { 
+                id: 21, 
+                category: 'tv', 
+                name: 'LG Nanocell 75" 4K', 
+                specs: 'Grandes Dimensiones - NanoColor - Smart WebOS', 
+                price: 3899, 
+                oldPrice: 4499, 
+                img: 'IMAGENES/NANOCELL 55.jpeg',
+                description: 'Experiencia de cine gigante en casa. Filtra las impurezas de los colores para mostrar una imagen más pura y realista.',
+                features: ['Pantalla gigante de 75 pulgadas', 'Tecnología NanoCell 4K Real', 'Procesador α5 Gen6 AI 4K', 'Modo FILMMAKER para películas']
+            },
+
+            // --- REFRIGERADORAS (7) ---
+            { 
+                id: 22, 
+                category: 'refrigeradoras', 
+                name: 'Refrigeradora LG No Frost 334L', 
+                specs: 'Inverter Linear - DoorCooling+ - Dispensador', 
+                price: 1899, 
+                oldPrice: 2200, 
+                img: 'IMAGENES/LG 334LT.jpeg',
+                description: 'Conserva la frescura de tus alimentos por más tiempo. Enfriamiento uniforme e instantáneo gracias al sistema DoorCooling+.',
+                features: ['Capacidad de 334 litros', 'Compresor Smart Inverter (10 años de garantía)', 'Sistema No Frost (sin escarcha)', 'Dispensador de agua externo']
+            },
+            { 
+                id: 23, 
+                category: 'refrigeradoras', 
+                name: 'Samsung French Door 470L', 
+                specs: 'Dispensador de Agua/Hielo - Twin Cooling Plus', 
+                price: 3499, 
+                oldPrice: 3999, 
+                img: 'IMAGENES/SAMSUNG 470L.jpeg',
+                description: 'Diseño moderno de 3 puertas con tecnología Twin Cooling Plus que mantiene los alimentos frescos con un 70% de humedad.',
+                features: ['Capacidad de 470 litros', 'Tecnología Digital Inverter', 'Doble sistema de refrigeración independiente', 'Acero inoxidable resistente a huellas']
+            },
+            { 
+                id: 24, 
+                category: 'refrigeradoras', 
+                name: 'Indurama DUPLEX 400L', 
+                specs: 'Side by Side - Acero Inoxidable - Display Touch', 
+                price: 2399, 
+                oldPrice: 2799, 
+                img: 'IMAGENES/INDURAMA.jpeg',
+                description: 'Formato Side by Side con amplio espacio interior, iluminación LED y panel de control táctil exterior.',
+                features: ['Capacidad total 400 Litros', 'Sistema de congelamiento No Frost', 'Panel digital multifunción', 'Bandejas de vidrio templado']
+            },
+            { 
+                id: 25, 
+                category: 'refrigeradoras', 
+                name: 'Whirlpool No Frost 300L', 
+                specs: 'Luz LED - Control Electrónico - Xpert Energy Saver', 
+                price: 1699, 
+                oldPrice: 1950, 
+                img: 'IMAGENES/WHIRLPOOL 300.jpeg',
+                description: 'Ahorro de energía óptimo con la tecnología Xpert Energy Saver. Distribución inteligente del flujo de aire frío.',
+                features: ['Capacidad de 300L', 'Compartimiento extra frío para carnes', 'Cajón de frutas y verduras con control de humedad', 'Bandejas ajustables de alta resistencia']
+            },
+            { 
+                id: 26, 
+                category: 'refrigeradoras', 
+                name: 'Midea Side by Side 510L', 
+                specs: 'Motor Inverter - Ahorro A+ - Iluminación LED', 
+                price: 2799, 
+                oldPrice: 3200, 
+                img: 'IMAGENES/BY SIDE 510.jpeg',
+                description: 'Gran capacidad de almacenamiento para toda la familia. Motor Inverter silencioso y súper eficiente en consumo eléctrico.',
+                features: ['Capacidad gigante de 510 Litros', 'Motor Quattro Inverter silencioso', 'Sistema de enfriamiento de 360 grados', 'Función de congelado rápido Super Freeze']
+            },
+            { 
+                id: 27, 
+                category: 'refrigeradoras', 
+                name: 'Bosch No Frost Serie 4 329L', 
+                specs: 'Diseño Inox Anti-huellas - VitaFresh', 
+                price: 2199, 
+                oldPrice: 2500, 
+                img: 'IMAGENES/FREEZER.jpeg',
+                description: 'Calidad alemana. Mantiene frutas y verduras frescas durante más tiempo en su cajón especial con control de humedad VitaFresh.',
+                features: ['Capacidad de 329L', 'Tecnología de frescura VitaFresh', 'Iluminación mediante LED desde el techo', 'Acero con tratamiento anti-huellas']
+            },
+            { 
+                id: 28, 
+                category: 'refrigeradoras', 
+                name: 'Electrolux Bottom Freezer 380L', 
+                specs: 'Congelador Inferior - AutoSense - Inverter', 
+                price: 2099, 
+                oldPrice: 2400, 
+                img: 'IMAGENES/ELECTROLUX.jpeg',
+                description: 'Congelador abajo para mayor comodidad. Tecnología AutoSense que aprende tus rutinas diarias para controlar la temperatura.',
+                features: ['Congelador en la parte inferior de fácil acceso', 'Tecnología AutoSense con Inteligencia Artificial', 'Motor Inverter ahorro de energía', 'Filtro TasteGuard elimina malos olores']
+            },
+
+            // --- LAVADORAS (7) ---
+            { 
+                id: 29, 
+                category: 'lavadoras', 
+                name: 'Lavadora Samsung 19Kg', 
+                specs: 'Carga Superior - Wobble Tech - Motor Digital Inverter', 
+                price: 1499, 
+                oldPrice: 1799, 
+                img: 'IMAGENES/SAMSUNG 19.jpeg',
+                description: 'Cuidado delicado de las prendas con los pulsadores Wobble que evitan enredos. Filtro atrapa pelusas de gran tamaño.',
+                features: ['Capacidad de lavado 19 Kg', 'Tecnología Digital Inverter (20 años garantía motor)', 'Tambor Diamond Drum de acero inoxidable', 'Lavado ecológico de tambor sin químicos']
+            },
+            { 
+                id: 30, 
+                category: 'lavadoras', 
+                name: 'Lavaseca LG AI DD 11Kg', 
+                specs: 'Carga Frontal - Vapor Steam - AI DD Inverter', 
+                price: 2299, 
+                oldPrice: 2699, 
+                img: 'IMAGENES/LG 11.jpeg',
+                description: 'Lava y seca en un solo equipo. La inteligencia artificial AI DD detecta el peso y la suavidad de la tela para elegir el ciclo óptimo.',
+                features: ['11Kg Lavado / 7Kg Secado', 'Motor Direct Drive asistido por IA', 'Tecnología Steam (elimina 99.9% de alérgenos)', 'Puerta de cristal templado elegante']
+            },
+            { 
+                id: 31, 
+                category: 'lavadoras', 
+                name: 'Lavadora Whirlpool 16Kg', 
+                specs: 'Sistema Xpert System - 12 Ciclos de Lavado', 
+                price: 1299, 
+                oldPrice: 1549, 
+                img: 'IMAGENES/WHIRLPOOL 16.jpeg',
+                description: 'Expertos en remoción de manchas difíciles gracias a sus ciclos preprogramados Xpert System y agitador Single Action.',
+                features: ['Capacidad de 16 Kg', 'Sistema de lavado Xpert System', 'Indicador LED de estatus de ciclo', 'Depósitos automáticos de detergente y suavizante']
+            },
+            { 
+                id: 32, 
+                category: 'lavadoras', 
+                name: 'Lavadora Mabe 18Kg', 
+                specs: 'Tecnología Aqua Saver Green - Infusor Aqua Energy', 
+                price: 1399, 
+                oldPrice: 1650, 
+                img: 'IMAGENES/MABE 18.jpeg',
+                description: 'Ahorra hasta un 76% de agua por lavada gracias a la tecnología Aqua Saver Green. Tapa de cristal templado con freno.',
+                features: ['Capacidad de 18 Kg', 'Infusor Aqua Energy para evitar enredos', '11 ciclos automáticos', 'Canasta SphereCare de acero inoxidable']
+            },
+            { 
+                id: 33, 
+                category: 'lavadoras', 
+                name: 'Lavaseca Samsung EcoBubble 12Kg', 
+                specs: 'EcoBubble - Carga Frontal - Control AI Control', 
+                price: 2499, 
+                oldPrice: 2899, 
+                img: 'IMAGENES/LAVASECA 12.jpeg',
+                description: 'Las burbujas penetran el tejido rápidamente para eliminar la suciedad fácilmente, incluso en agua fría.',
+                features: ['12Kg Lavado / 8Kg Secado', 'Tecnología EcoBubble limpieza profunda', 'Panel AI Control que personaliza tu lavado', 'Motor Digital Inverter']
+            },
+            { 
+                id: 34, 
+                category: 'lavadoras', 
+                name: 'Secadora a Gas Whirlpool 18Kg', 
+                specs: 'Secado AutoSense - Sistema AutoDry - Carga Frontal', 
+                price: 1899, 
+                oldPrice: 2199, 
+                img: 'IMAGENES/SECADORA 18.jpeg',
+                description: 'Secado eficiente a gas con sensores que detectan la humedad para apagar la máquina cuando las prendas están en su punto.',
+                features: ['Gran capacidad de 18 Kg', '3 niveles de temperatura', 'Filtro atrapapelusas atrapa-polvo frontal', 'Prevención de arrugas Wrinkle Shield']
+            },
+            { 
+                id: 35, 
+                category: 'lavadoras', 
+                name: 'Lavadora Electrolux 15Kg', 
+                specs: 'Filtro Caza Pelusas - Power Dilution - Carga Superior', 
+                price: 1199, 
+                oldPrice: 1399, 
+                img: 'IMAGENES/ELECTROLUX 15.jpeg',
+                description: 'Excelente disolución de detergente con el sistema Power Dilution evitando manchas de jabón en la ropa oscura.',
+                features: ['Capacidad de 15 Kg', 'Filtro atrapapelusas 5 veces más grande', 'Programa de lavado rápido de 19 minutos', 'Diseño compacto y duradero']
+            },
+
+            // --- COCINA (7) ---
+            { 
+                id: 36, 
+                category: 'cocina', 
+                name: 'Cocina Indurama 4 Hornillas', 
+                specs: 'Encendido Eléctrico - Horno Panorámico - Quemador Triple Llama', 
+                price: 899, 
+                oldPrice: 1099, 
+                img: 'IMAGENES/INDURAMA 4.jpeg',
+                description: 'Cocina a gas de 4 hornillas de alta eficiencia con encendido eléctrico en quemadores y horno. Acabado en acero inoxidable.',
+                features: ['4 Quemadores con sellado hermético', 'Quemador Triple Llama para cocción rápida', 'Horno con sistema Really Clean de fácil limpieza', 'Tapa de vidrio templado']
+            },
+            { 
+                id: 37, 
+                category: 'cocina', 
+                name: 'Freidora de Aire Oster 4L', 
+                specs: 'Panel Digital - Bioceramic - 7 Funciones', 
+                price: 349, 
+                oldPrice: 450, 
+                img: 'IMAGENES/FREIDORA 4.jpeg',
+                description: 'Cocina con hasta un 99.5% menos de aceite. Recubrimiento Bioceramic 100% natural libre de tóxicos y más resistente.',
+                features: ['Capacidad de 4 Litros', 'Recubrimiento cerámico Bioceramic', 'Panel táctil digital preprogramado', 'Cesta extraíble apta para lavavajillas']
+            },
+            { 
+                id: 38, 
+                category: 'cocina', 
+                name: 'Horno Microondas LG 42L', 
+                specs: 'Smart Inverter - Función Dorador Grill - EasyClean', 
+                price: 529, 
+                oldPrice: 650, 
+                img: 'IMAGENES/HORNO LG.jpeg',
+                description: 'Calentamiento y descongelación uniforme con control preciso de temperatura gracias a la tecnología LG Smart Inverter.',
+                features: ['Gran capacidad de 42 Litros', 'Potencia de 1200W con dorador Grill', 'Recubrimiento anti-bacteriano EasyClean', 'Anillo hexagonal estable para el plato']
+            },
+            { 
+                id: 39, 
+                category: 'cocina', 
+                name: 'Licuadora Oster Reversible', 
+                specs: 'Vaso de Vidrio Reforzado - 3 Vel - Motor 600W', 
+                price: 279, 
+                oldPrice: 320, 
+                img: 'IMAGENES/OSTER 600.jpeg',
+                description: 'Tecnología de motor reversible que gira en ambas direcciones para licuar e integrar todos los ingredientes sin atascarse.',
+                features: ['Motor potente de 600 Watts', 'Cuchilla de acero inoxidable de 6 aspas', 'Vaso de vidrio Boroclass resistente a choques térmicos', 'Acople totalmente metálico All-Metal Drive']
+            },
+            { 
+                id: 40, 
+                category: 'cocina', 
+                name: 'Cocina de Pie Mabe 5 Hornillas', 
+                specs: 'Quemador Fast Cook - Tapa de Vidrio - Luz en Horno', 
+                price: 1299, 
+                oldPrice: 1500, 
+                img: 'IMAGENES/MABE 5.jpeg',
+                description: 'Mayor espacio y potencia. Incluye quemador Fast Cook para hervir agua rápidamente y parrillas de hierro fundido.',
+                features: ['5 quemadores con encendido electrónico', 'Parrillas de hierro fundido continuas', 'Horno con ventana panorámica termo controlada', 'Ancho de 76 cm con acabados en Inox']
+            },
+            { 
+                id: 41, 
+                category: 'cocina', 
+                name: 'Olla Arrocera Thomas 2.2L', 
+                specs: 'Tapa de Vidrio - Función Tostado Sofrito - Recubrimiento Antiadherente', 
+                price: 149, 
+                oldPrice: 189, 
+                img: 'IMAGENES/OLLA 2.jpeg',
+                description: 'Prepara el arroz perfecto rápidamente. Cuenta con función para dorar/sofritar antes de cocinar el arroz.',
+                features: ['Capacidad de 2.2 Litros (aprox. 1.2 kg de arroz)', 'Tazón interior antiadherente removible', 'Luces indicadoras de cocción y mantener caliente', 'Incluye taza medidora y cuchara']
+            },
+            { 
+                id: 42, 
+                category: 'cocina', 
+                name: 'Batidora de Pedestal Taurus 1200W', 
+                specs: 'Tazón de Acero Inoxidable 5L - 6 Velocidades + Pulse', 
+                price: 399, 
+                oldPrice: 499, 
+                img: 'IMAGENES/TAURUS 1200.jpeg',
+                description: 'Movimiento planetario para mezclas homogéneas en repostería. Potente motor para amasar pan, batir claras o mezclar pasteles.',
+                features: ['Motor industrial de 1200W', 'Tazón de acero inoxidable de 5 Litros', 'Incluye 3 ganchos: Globo, Batidor y Amasador', 'Cabezal basculante con bloqueo de seguridad']
+            }
+        ];
+
+        let cart = [];
+
+        function renderProducts(items) {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            items.forEach(product => {
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <i class="fa-regular fa-heart fav-icon"></i>
+                        <img src="${product.img}" alt="${product.name}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=Producto'">
+                        <div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-specs">${product.specs}</div>
+                            <div class="price-old">S/ ${product.oldPrice.toLocaleString()}</div>
+                            <div class="price-current">S/ ${product.price.toLocaleString()}</div>
+                        </div>
+                        <div>
+                            <button class="btn-details" onclick="openDetails(${product.id})"><i class="fa-solid fa-circle-info"></i> Ver detalles</button>
+                            <button class="btn-add" onclick="addToCart(${product.id})">
+                                <i class="fa-solid fa-cart-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterCategory(cat, btn) {
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            if (cat === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                renderProducts(filtered);
+            }
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<p style="text-align: center; color: #94a3b8; margin-top: 20px;">El carrito está vacío.</p>`;
+                cartTotal.innerText = 'S/ 0';
+                return;
+            }
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-price">S/ ${item.price.toLocaleString()}</div>
+                        </div>
+                        <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            });
+
+            cartTotal.innerText = `S/ ${total.toLocaleString()}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('open');
+        }
+
+        // Modal de Detalles Técnicos
+        function openDetails(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('modalTitle').innerText = product.name;
+            document.getElementById('modalImg').src = product.img;
+            document.getElementById('modalPrice').innerText = `S/ ${product.price.toLocaleString()}`;
+            document.getElementById('modalDesc').innerText = product.description;
+
+            const featuresList = document.getElementById('modalFeatures');
+            featuresList.innerHTML = '';
+            product.features.forEach(feat => {
+                featuresList.innerHTML += `<li><i class="fa-solid fa-check" style="color: #16a34a;"></i> ${feat}</li>`;
+            });
+
+            const addBtn = document.getElementById('modalAddBtn');
+            addBtn.onclick = function() {
+                addToCart(product.id);
+                closeDetails();
+            };
+
+            document.getElementById('detailsModal').classList.add('open');
+        }
+
+        function closeDetails() {
+            document.getElementById('detailsModal').classList.remove('open');
+        }
+
+        // Modal de Contacto
+        function openContact() {
+            document.getElementById('contactModal').classList.add('open');
+        }
+
+        function closeContact() {
+            document.getElementById('contactModal').classList.remove('open');
+        }
+
+        function submitContact(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
+            const message = document.getElementById('contactMessage').value;
+
+            const msg = `Hola Electro Hogar JBC, mi nombre es ${name} (Tel: ${phone}). ${message}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            closeContact();
+        }
+
+        function sendWhatsApp() {
+            if (cart.length === 0) return alert('El carrito está vacío');
+            let msg = '¡Hola Electro Hogar JBC! Quiero consultar por los siguientes productos:\n\n';
+            let total = 0;
+            cart.forEach(item => {
+                msg += `- ${item.name} (S/ ${item.price.toLocaleString()})\n`;
+                total += item.price;
+            });
+            msg += `\n*Total estimado:* S/ ${total.toLocaleString()}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Cargar productos al iniciar
+        renderProducts(products);
+        
+    </script>
+   
+</body>
+</html>
+<!-- Sección de Video Promocional Local al final de la página -->
+        <div style="max-width: 1100px; margin: 40px auto; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <h3 style="font-size: 18px; color: #0d1b2a; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fa-solid fa-circle-play" style="color: #2563eb;">
+                
+                Conoce más sobre Electro Hogar JBC
+            </h3>
+            
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
+                Mira nuestro video promocional e infórmate sobre nuestros envíos, garantías y productos.
+            </p>
+
+            <div style="max-width: 800px; margin: 0 auto; overflow: hidden; border-radius: 10px; background-color: #000;">
+                <video controls width="100%" poster="VIDEO/VIDEO.mp4" style="display: block; max-height: 450px;">
+                    <!-- Reemplaza 'videos/mi_video.mp4' por la ruta y nombre de tu archivo de video -->
+                    <source src="VIDEO/VIDEO.mp4" type="video/mp4">
+                    <source src="VIDEO/VIDEO.mp4" type="video/webm">
+                    Tu navegador no soporta la reproducción de video.
+                </video>
+            </div>
+        </div>
